@@ -16,21 +16,21 @@ export default async function Home() {
 
   const myCharacters = (
     <div className="flex flex-col gap-2">
-      <h5 className="text-red-700">My Characters</h5>
+      <h5 className="text-red-600">My Characters</h5>
       <div className="opacity-50">None yet</div>
     </div>
   );
 
   const myCampaigns = (
     <div className="flex flex-col gap-2">
-      <h5 className="text-red-700">My Campaigns</h5>
+      <h5 className="text-red-600">My Campaigns</h5>
       <div className="opacity-50">None yet</div>
     </div>
   );
 
   const myProfile = (
     <div className="flex flex-col gap-2 ">
-      <h5 className="text-red-700">My Profile</h5>
+      <h5 className="text-red-600">My Profile</h5>
       <div className="">
         <span className="font-bold pe-2">Display Name:</span>
         {profile?.displayName}

@@ -35,4 +35,72 @@ model BaseClass {
   slug          String    @unique
   description   String
   hitDice       String  
+
+  subClasses    SubClass[]
+}
+
+model SubClass {
+  id            String    @id @default(uuid())
+  name          String    @unique
+  slug          String    @unique
+  description   String
+  minLevel      Int
+  baseClass     BaseClass @relation(fields: [baseClassId], references: [id])
+  baseClassId   String    
+}
+
+model Inventory {
+  id            String    @id @default(uuid())
+  name          String
+  capacity      Int
+  type          String
+}
+
+model Weapon {
+  id            String    @id @default(uuid())
+  name          String    
+  slug          String    @unique
+  description   String
+  rangeFt       Int
+  longRangeFt   Int?
+  type          WeaponType
+
+  weaponDamages WeaponDamage[]
+}
+
+enum WeaponType {
+  MELEE
+  RANGED
+}
+
+model WeaponProperty {
+  id            String    @id @default(uuid())
+  name          String
+  slug          String    @unique
+  description   String
+}
+
+model WeaponDamage {
+  id            String    @id @default(uuid())
+  weaponId      String
+  weapon        Weapon @relation(fields: [weaponId], references: [id])
+  diceCount     Int
+  dice          String
+  type          DamageType
+}
+
+enum DamageType {
+  ACID
+  BLUDGEONING
+  COLD
+  FIRE
+  FORCE
+  LIGHTNING
+  NECROTIC
+  PIERCING
+  POISON
+  PSYCHIC
+  RADIANT
+  SLASHING
+  THUNDER
 }
