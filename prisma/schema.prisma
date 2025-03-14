@@ -13,6 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Profile {
+  id            String    @id @default(uuid())
+  authId        String    @unique
+  displayName   String    
+
+  campaigns     Campaign[]
+}
+
+model Campaign {
+  id              String    @id @default(uuid())
+  name            String
+  slug            String
+  ownerProfile    Profile    @relation(fields: [ownerProfileId], references: [id])
+  ownerProfileId  String
+}
+
 model BaseClass {
   id            String    @id @default(uuid())
   name          String    @unique

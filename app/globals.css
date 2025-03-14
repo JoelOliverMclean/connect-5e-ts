@@ -40,8 +40,10 @@ h6 {
 }
 
 button[component="SignInButton"],
-button[component="SignUpButton"] {
-  @apply bg-red-800 border-yellow-500 border-1 shadow-sm shadow-yellow-700 px-4 py-2 text-xl flex-grow hover:bg-red-700 duration-300 hover:px-10;
+button[component="SignUpButton"],
+input[type="submit"],
+.primary-button {
+  @apply cursor-pointer text-center bg-red-800 border-yellow-500 border-1 shadow-sm shadow-yellow-700 px-4 py-2 text-xl flex-grow hover:bg-red-700 duration-300 hover:px-10;
 }
 
 .safe-area {
@@ -49,4 +51,8 @@ button[component="SignUpButton"] {
   padding-right: env(safe-area-inset-right);
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
+}
+
+input[type="text"] {
+  @apply bg-black p-2 focus:ring-1 focus:ring-yellow-500 focus:outline-none;
 }
