@@ -2,6 +2,7 @@ import RaceForm from "@/components/forms/RaceForm";
 import React from "react";
 import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
+import SourceHeader from "@/components/source/SourceHeader";
 
 const prisma = new PrismaClient();
 
@@ -22,10 +23,7 @@ async function NewRacePage({
   }
   return (
     <div className="flex flex-col">
-      <div className="bg-red-800 p-4">
-        <p>Source</p>
-        <h4>{source?.name}</h4>
-      </div>
+      <SourceHeader source={source} />
       <div className="flex flex-col gap-4 p-4">
         <h4>Create new race</h4>
         <RaceForm source={source} />

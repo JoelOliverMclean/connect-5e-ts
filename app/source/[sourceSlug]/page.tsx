@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import SourceRaces from "@/components/source/SourceRaces";
 import SourceSubRaces from "@/components/source/SourceSubraces";
 import SourceTabNavigation from "@/components/source/SourceTabNavigation";
+import SourceHeader from "@/components/source/SourceHeader";
 
 const prisma = new PrismaClient();
 
@@ -32,10 +33,7 @@ async function SourcePage({
 
   return (
     <div className="flex flex-col">
-      <div className="bg-red-800 p-4">
-        <p>Source</p>
-        <h4>{source?.name}</h4>
-      </div>
+      <SourceHeader source={source} />
       <SourceTabNavigation
         source={source}
         races={source.races}
