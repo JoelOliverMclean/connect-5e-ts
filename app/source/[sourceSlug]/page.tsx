@@ -1,5 +1,7 @@
 import React from "react";
 import { PrismaClient } from "@prisma/client";
+import SourceRaces from "@/components/source/SourceRaces";
+import SourceSubRaces from "@/components/source/SourceSubraces";
 
 const prisma = new PrismaClient();
 
@@ -12,6 +14,10 @@ async function SourcePage({
   const source = await prisma.source.findUnique({
     where: {
       slug: sourceSlug,
+    },
+    include: {
+      races: true,
+      subRaces: true,
     },
   });
 
@@ -28,7 +34,10 @@ async function SourcePage({
       <div>
         <p>Source</p>
         <h4>{source?.name}</h4>
+        <hr />
       </div>
+      <SourceRaces races={source.races} />
+      <SourceSubRaces subRaces={source.subRaces} />
     </div>
   );
 }
