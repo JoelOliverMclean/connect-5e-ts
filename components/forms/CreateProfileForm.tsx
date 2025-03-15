@@ -37,7 +37,7 @@ function CreateProfileForm() {
     >
       <div className="flex flex-col gap-4">
         <input type="text" name="displayName" placeholder="Display name" />
-        {error && <p className="text-red-600 font-bold">{error}</p>}
+        {error && <p className="font-bold text-red-600">{error}</p>}
         <input type="submit" />
       </div>
     </form>

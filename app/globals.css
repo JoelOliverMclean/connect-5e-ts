@@ -16,34 +16,34 @@ body {
 }
 
 h1 {
-  @apply text-6xl md:text-7xl font-bold;
+  @apply text-6xl font-bold md:text-7xl;
 }
 
 h2 {
-  @apply text-5xl md:text-6xl font-bold;
+  @apply text-5xl font-bold md:text-6xl;
 }
 
 h3 {
-  @apply text-4xl md:text-5xl font-semibold;
+  @apply text-4xl font-semibold md:text-5xl;
 }
 
 h4 {
-  @apply text-3xl md:text-4xl font-semibold;
+  @apply text-3xl font-semibold md:text-4xl;
 }
 
 h5 {
-  @apply text-2xl md:text-3xl font-semibold;
+  @apply text-2xl font-semibold md:text-3xl;
 }
 
 h6 {
-  @apply text-xl md:text-2xl font-semibold;
+  @apply text-xl font-semibold md:text-2xl;
 }
 
 button[component="SignInButton"],
 button[component="SignUpButton"],
 input[type="submit"],
 .primary-button {
-  @apply cursor-pointer text-center bg-red-800 border-yellow-500 border-1 shadow-sm shadow-yellow-700 px-4 py-2 flex-grow hover:bg-red-700 duration-300 hover:px-10;
+  @apply flex-grow cursor-pointer border-1 border-yellow-500 bg-red-800 px-4 py-2 text-center shadow-sm shadow-yellow-700 duration-300 hover:bg-red-700 hover:px-10;
 }
 
 .safe-area {

@@ -28,7 +28,7 @@ async function ProfilePage() {
     <div className="flex flex-col gap-4 p-4">
       <h3>{user?.firstName}'s Profile</h3>
       <p>
-        <span className="font-bold pe-2">Display Name:</span>
+        <span className="pe-2 font-bold">Display Name:</span>
         {profile?.displayName}
       </p>
     </div>

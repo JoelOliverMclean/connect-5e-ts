@@ -27,8 +27,8 @@ export default function RootLayout({
     >
       <html lang="en">
         <body className={`${cinzelSerif.className} antialiased`}>
-          <div className="h-screen bg-gradient-to-b to-stone-800 from-stone-950 flex flex-col safe-area">
-            <header className="sticky-top flex justify-between items-center p-4 gap-4 h-16 bg-red-900">
+          <div className="safe-area flex h-screen flex-col bg-gradient-to-b from-stone-950 to-stone-800">
+            <header className="sticky-top flex h-16 items-center justify-between gap-4 bg-red-900 p-4">
               <Link className="text-2xl font-bold" href={"/"}>
                 Connect5e
               </Link>
@@ -38,7 +38,7 @@ export default function RootLayout({
                 </SignedIn>
               </div>
             </header>
-            <main className="container flex-grow mx-auto overflow-y-auto">
+            <main className="container mx-auto flex-grow overflow-y-auto">
               <SignedOut>
                 <LandingContent />
               </SignedOut>

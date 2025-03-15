@@ -20,10 +20,10 @@ function HomeProfile({
   }
 
   return (
-    <div className="flex flex-col gap-2 ">
+    <div className="flex flex-col gap-2">
       <h4 className="text-red-600">My Profile</h4>
       <div className="">
-        <span className="font-bold pe-2">Display Name:</span>
+        <span className="pe-2 font-bold">Display Name:</span>
         {profile?.displayName}
       </div>
     </div>
