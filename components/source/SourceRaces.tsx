@@ -10,9 +10,13 @@ function SourceRaces({
   races: Race[];
 }>) {
   const raceCell = (race: Race, index: number) => (
-    <div key={index} className="primary-button">
+    <Link
+      href={`/source/${source.slug}/races/${race.slug}`}
+      key={index}
+      className="primary-button"
+    >
       <p>{race.name}</p>
-    </div>
+    </Link>
   );
 
   return (
