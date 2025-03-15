@@ -3,13 +3,13 @@ import { getFormJson } from "@/utils/formUtils";
 import { redirect } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 
-function CreateProfileForm() {
+function SourceForm() {
   const [error, setError] = useState<string | null | undefined>(null);
 
-  const submitProfileForm = (event: FormEvent<HTMLFormElement>) => {
+  const submitSourceForm = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = getFormJson(event);
-    fetch("/api/profile", {
+    fetch("/api/source", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -20,7 +20,7 @@ function CreateProfileForm() {
       response.json().then((data) => {
         if (response.status === 200) {
           setError(null);
-          redirect("/profile");
+          redirect(`/source/${data.slug}`);
         } else {
           setError(data.error);
         }
@@ -29,14 +29,10 @@ function CreateProfileForm() {
   };
 
   return (
-    <form
-      onSubmit={(e) => {
-        "use client";
-        submitProfileForm(e);
-      }}
-    >
+    <form onSubmit={submitSourceForm}>
       <div className="flex flex-col gap-4">
-        <input type="text" name="displayName" placeholder="Display name" />
+        <input type="text" name="name" placeholder="Source name" />
+        <textarea name="description" placeholder="Enter source description" />
         {error && <p className="text-red-600 font-bold">{error}</p>}
         <input type="submit" />
       </div>
@@ -44,4 +40,4 @@ function CreateProfileForm() {
   );
 }
 
-export default CreateProfileForm;
+export default SourceForm;

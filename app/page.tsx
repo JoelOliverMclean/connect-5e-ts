@@ -1,6 +1,9 @@
+import HomeCampaigns from "@/components/home/HomeCampaigns";
+import HomeCharacters from "@/components/home/HomeCharacters";
+import HomeProfile from "@/components/home/HomeProfile";
+import HomeSources from "@/components/home/HomeSources";
 import { currentUser } from "@clerk/nextjs/server";
-import { PrismaClient } from "@prisma/client";
-import Link from "next/link";
+import { PrismaClient, type Source } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -14,55 +17,48 @@ export default async function Home() {
     },
   });
 
-  const myCharacters = (
-    <div className="flex flex-col gap-2">
-      <h5 className="text-red-600">My Characters</h5>
-      <div className="opacity-50">None yet</div>
-    </div>
-  );
+  const characters = !profile
+    ? []
+    : await prisma.character.findMany({
+        where: {
+          profileId: {
+            equals: profile.id,
+          },
+        },
+      });
 
-  const myCampaigns = (
-    <div className="flex flex-col gap-2">
-      <h5 className="text-red-600">My Campaigns</h5>
-      <div className="opacity-50">None yet</div>
-    </div>
-  );
+  const campaigns = !profile
+    ? []
+    : await prisma.campaign.findMany({
+        where: {
+          ownerProfileId: {
+            equals: profile.id,
+          },
+        },
+      });
 
-  const myProfile = (
-    <div className="flex flex-col gap-2 ">
-      <h5 className="text-red-600">My Profile</h5>
-      <div className="">
-        <span className="font-bold pe-2">Display Name:</span>
-        {profile?.displayName}
-      </div>
-    </div>
-  );
-
-  const createProfile = (
-    <div className="flex flex-col gap-2">
-      <h5>Get Started</h5>
-      <p>Create a profile to begin adventuring!</p>
-      <Link className="primary-button" href={"/profile/create"}>
-        Create Profile
-      </Link>
-    </div>
-  );
+  const sources = !profile
+    ? []
+    : await prisma.source.findMany({
+        where: {
+          ownerProfileId: {
+            equals: profile.id,
+          },
+        },
+      });
 
   return (
     <div className="flex flex-col gap-4 p-4">
-      <h4 className="">
-        Welcome back{user?.firstName && `, ${user?.firstName}`}
-      </h4>
+      <h3 className="">Welcome{user?.firstName && `, ${user?.firstName}`}</h3>
       <hr />
-      {profile ? (
+      {profile && (
         <>
-          {myCharacters}
-          {myCampaigns}
-          {myProfile}
+          <HomeCharacters characters={characters} />
+          <HomeCampaigns campaigns={campaigns} />
+          <HomeSources sources={sources} />
         </>
-      ) : (
-        <>{createProfile}</>
       )}
+      <HomeProfile profile={profile} />
     </div>
   );
 }
