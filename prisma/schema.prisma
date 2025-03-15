@@ -20,6 +20,7 @@ model Profile {
 
   campaigns     Campaign[]
   sources       Source[]
+  characters    Character[]
 }
 
 model Campaign {
@@ -347,9 +348,10 @@ model Character {
   charisma            Int
   spellcastingId      String?
   exhaustionLevel     Int?
+  profileId           String
 
   spellcasting        CharacterSpellcasting?
-
+  profile             Profile                 @relation(fields: [profileId], references: [id])
   skills              CharacterSkill[]
   inventories         Inventory[]
   characterClasses    CharacterClass[]
