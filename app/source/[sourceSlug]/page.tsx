@@ -30,14 +30,27 @@ async function SourcePage({
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <div>
+    <div className="flex flex-col">
+      <div className="p-4">
         <p>Source</p>
         <h4>{source?.name}</h4>
-        <hr />
       </div>
-      <SourceRaces races={source.races} />
-      <SourceSubRaces subRaces={source.subRaces} />
+      <div className="flex overflow-x-auto gap-2 p-2 bg-red-800">
+        <div className="px-4 py-2 rounded">Races</div>
+        <div className="px-4 py-2 rounded">Classes</div>
+        <div className="px-4 py-2 rounded">Spells</div>
+        <div className="px-4 py-2 rounded">Weapons</div>
+        <div className="px-4 py-2 rounded">Ammunitions</div>
+        <div className="px-4 py-2 rounded">Armor</div>
+        <div className="px-4 py-2 rounded">Items</div>
+        <div className="px-4 py-2 rounded">Conditions</div>
+        <div className="px-4 py-2 rounded">Language</div>
+        <div className="px-4 py-2 rounded">Currencies</div>
+      </div>
+      <div className="flex flex-col gap-4 p-4">
+        <SourceRaces races={source.races} />
+        <SourceSubRaces subRaces={source.subRaces} />
+      </div>
     </div>
   );
 }
