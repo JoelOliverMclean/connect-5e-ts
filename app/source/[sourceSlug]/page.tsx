@@ -36,7 +36,11 @@ async function SourcePage({
         <p>Source</p>
         <h4>{source?.name}</h4>
       </div>
-      <SourceTabNavigation races={source.races} subRaces={source.subRaces} />
+      <SourceTabNavigation
+        source={source}
+        races={source.races}
+        subRaces={source.subRaces}
+      />
     </div>
   );
 }

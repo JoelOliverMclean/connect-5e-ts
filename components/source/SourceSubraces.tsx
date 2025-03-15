@@ -15,7 +15,7 @@ function SourceSubRaces({
 
   return (
     <div className="flex flex-col gap-2">
-      <h4 className="text-red-600">Sub-Races</h4>
+      <h4 className="text-red-600">Subraces</h4>
       <div className="flex flex-col gap-2">
         {subRaces.length > 0 ? (
           subRaces.map((subRace, index) => subRaceCell(subRace, index))
@@ -23,7 +23,7 @@ function SourceSubRaces({
           <>
             <div className="text-center opacity-50">No sub-races yet</div>
             <Link href="/new/source" className="primary-button self-center">
-              Create new race
+              Create new subrace
             </Link>
           </>
         )}

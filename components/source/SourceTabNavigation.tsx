@@ -1,13 +1,15 @@
 "use client";
-import { Race, Source, SubRace } from "@prisma/client";
+import type { Race, Source, SubRace } from "@prisma/client";
 import React, { useState } from "react";
 import SourceRaces from "./SourceRaces";
 import SourceSubRaces from "./SourceSubraces";
 
 function SourceTabNavigation({
+  source,
   races,
   subRaces,
 }: Readonly<{
+  source: Source;
   races: Race[];
   subRaces: SubRace[];
 }>) {
@@ -43,7 +45,7 @@ function SourceTabNavigation({
         {tabElement("Currencies")}
       </div>
       <div className="flex flex-col gap-4 p-4">
-        <SourceRaces races={races} />
+        <SourceRaces source={source} races={races} />
         <SourceSubRaces subRaces={subRaces} />
       </div>
     </>

@@ -1,14 +1,12 @@
 "use client";
-import { getFormJson } from "@/utils/formUtils";
 import { redirect } from "next/navigation";
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
+import { BaseFormData, BaseForm } from "./BaseForm";
 
 function SourceForm() {
   const [error, setError] = useState<string | null | undefined>(null);
 
-  const submitSourceForm = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = getFormJson(event);
+  const submitSourceForm = (data: BaseFormData) => {
     fetch("/api/source", {
       headers: {
         Accept: "application/json",
@@ -29,14 +27,10 @@ function SourceForm() {
   };
 
   return (
-    <form onSubmit={submitSourceForm}>
-      <div className="flex flex-col gap-4">
-        <input type="text" name="name" placeholder="Source name" />
-        <textarea name="description" placeholder="Enter source description" />
-        {error && <p className="font-bold text-red-600">{error}</p>}
-        <input type="submit" />
-      </div>
-    </form>
+    <BaseForm onSubmitData={submitSourceForm} error={error}>
+      <input type="text" name="name" placeholder="Source name" />
+      <textarea name="description" placeholder="Enter source description" />
+    </BaseForm>
   );
 }
 

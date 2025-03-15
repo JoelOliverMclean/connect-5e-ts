@@ -1,10 +1,12 @@
-import { type Race } from "@prisma/client";
+import type { Source, Race } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 
 function SourceRaces({
+  source,
   races,
 }: Readonly<{
+  source: Source;
   races: Race[];
 }>) {
   const raceCell = (race: Race, index: number) => (
@@ -22,7 +24,10 @@ function SourceRaces({
         ) : (
           <>
             <div className="text-center opacity-50">No races yet</div>
-            <Link href="/new/source" className="primary-button self-center">
+            <Link
+              href={`/source/${source.slug}/races/new`}
+              className="primary-button self-center"
+            >
               Create new race
             </Link>
           </>
