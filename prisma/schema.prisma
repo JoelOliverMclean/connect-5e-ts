@@ -14,58 +14,174 @@ datasource db {
 }
 
 model Profile {
-  id            String    @id @default(uuid())
-  authId        String    @unique
+  id            String        @id @default(uuid())
+  authId        String        @unique
   displayName   String    
 
   campaigns     Campaign[]
 }
 
 model Campaign {
-  id              String    @id @default(uuid())
+  id              String      @id @default(uuid())
   name            String
   slug            String
-  ownerProfile    Profile    @relation(fields: [ownerProfileId], references: [id])
   ownerProfileId  String
+
+  ownerProfile    Profile     @relation(fields: [ownerProfileId], references: [id])
+}
+
+model Race {
+  id            String            @id @default(uuid())
+  name          String
+  slug          String            @unique
+  description   String
+
+  subRaces      SubRace[]
+  features      RaceFeature[]
+}
+
+model SubRace {
+  id            String            @id @default(uuid())
+  name          String
+  slug          String            @unique
+  description   String
+  raceId        String
+
+  race          Race              @relation(fields: [raceId], references: [id])
+  features      RaceFeature[]
+}
+
+model RaceFeature {
+  id                String            @id @default(uuid())
+  name              String
+  slug              String            @unique
+  description       String
+  type              FeatureType
+  maxUses           Int?
+  refreshPeriod     RefreshPeriod?
+  raceId            String
+  subRaceId         String?
+
+  race              Race              @relation(fields: [raceId], references: [id])
+  subRace           SubRace?          @relation(fields: [subRaceId], references: [id])
 }
 
 model BaseClass {
-  id            String    @id @default(uuid())
-  name          String    @unique
-  slug          String    @unique
-  description   String
-  hitDice       String  
+  id                  String              @id @default(uuid())
+  name                String              @unique
+  slug                String              @unique
+  description         String
+  hitDice             String  
 
-  subClasses    SubClass[]
+  subClasses          SubClass[]
+  features            ClassFeature[]
+  characterClasses    CharacterClass[]
 }
 
 model SubClass {
-  id            String    @id @default(uuid())
-  name          String    @unique
-  slug          String    @unique
-  description   String
-  minLevel      Int
-  baseClass     BaseClass @relation(fields: [baseClassId], references: [id])
-  baseClassId   String    
+  id                  String              @id @default(uuid())
+  name                String              @unique
+  slug                String              @unique
+  description         String
+  minLevel            Int
+  baseClassId         String    
+
+  baseClass           BaseClass           @relation(fields: [baseClassId], references: [id])
+  features            ClassFeature[]
+  characterClasses    CharacterClass[]
+}
+
+model ClassFeature {
+  id              String            @id @default(uuid())
+  name            String
+  slug            String            @unique
+  levelGained     Int
+  type            FeatureType       @default(FEATURE)
+  description     String
+  maxUses         Int?
+  refreshPeriod   RefreshPeriod?
+  subClassId      String?
+  baseClassId     String
+
+  baseClass       BaseClass         @relation(fields: [baseClassId], references: [id])
+  subClass        SubClass?         @relation(fields: [subClassId], references: [id])
+}
+
+enum RefreshPeriod {
+  SHORT_REST
+  LONG_REST
+  AT_DAWN
+}
+
+enum FeatureType {
+  FEATURE
+  ACTION
+  BONUS_ACTION
+  REACTION
 }
 
 model Inventory {
-  id            String    @id @default(uuid())
+  id                      String              @id @default(uuid())
+  name                    String
+  capacity                Int
+  type                    InventoryType
+  characterId             String?
+
+  character               Character?          @relation(fields: [characterId], references: [id])
+}
+
+enum InventoryType {
+  BACKPACK
+  STORAGE
+}
+
+model InventoryItem {
+  id            String              @id @default(uuid())
+  name          String    
+  itemType      InventoryItemType
+  referenceId   String
+
+  @@index([referenceId, itemType], name: "item_reference_idx")
+}
+
+enum InventoryItemType {
+  ITEM
+  WEAPON
+  ARMOR
+  TOOL
+  AMMUNITION
+  TRINKET
+}
+
+model Ammunition {
+  id            String      @id @default(uuid())
   name          String
-  capacity      Int
-  type          String
+  slug          String      @unique
+  description   String
+
+  weapons       Weapon[]
+}
+
+model Item {
+  id            String      @id @default(uuid())
+  name          String
+  slug          String      @unique
+  description   String
 }
 
 model Weapon {
-  id            String    @id @default(uuid())
-  name          String    
-  slug          String    @unique
-  description   String
-  rangeFt       Int
-  longRangeFt   Int?
-  type          WeaponType
+  id              String                        @id @default(uuid())
+  name            String    
+  slug            String                        @unique
+  description     String
+  rangeFt         Int
+  longRangeFt     Int?
+  type            WeaponType
+  ammunitionId    String?
 
-  weaponDamages WeaponDamage[]
+  ammunition      Ammunition?                   @relation(fields: [ammunitionId], references: [id])
+  damages         WeaponDamage[]
+  properties      WeaponPropertiesOnWeapon[]
 }
 
 enum WeaponType {
@@ -78,15 +194,28 @@ model WeaponProperty {
   name          String
   slug          String    @unique
   description   String
+
+  weapons       WeaponPropertiesOnWeapon[]
+}
+
+model WeaponPropertiesOnWeapon {
+  weaponId      String
+  propertyId    String
+
+  weapon        Weapon          @relation(fields: [weaponId], references: [id])
+  property      WeaponProperty  @relation(fields: [propertyId], references: [id])
+
+  @@id([weaponId, propertyId])
 }
 
 model WeaponDamage {
-  id            String    @id @default(uuid())
+  id            String        @id @default(uuid())
   weaponId      String
-  weapon        Weapon @relation(fields: [weaponId], references: [id])
   diceCount     Int
   dice          String
   type          DamageType
+  
+  weapon        Weapon        @relation(fields: [weaponId], references: [id])
 }
 
 enum DamageType {
@@ -103,4 +232,280 @@ enum DamageType {
   RADIANT
   SLASHING
   THUNDER
+}
+
+model Armor {
+  id                    String        @id @default(uuid())
+  name                  String
+  slug                  String        @unique
+  description           String
+  stealthDisadvantage   Boolean
+  strengthRequired      Int?
+  baseAC                Int?
+  bonusAC               Int?
+  type                  ArmorType
+}
+
+enum ArmorType {
+  LIGHT
+  MEDIUM
+  HEAVY
+  SHIELD
+}
+
+model Character {
+  id                  String                    @id @default(uuid())
+  name                String
+  slug                String
+  raceId              String
+  subRaceId           String?
+  strength            Int
+  dexterity           Int
+  constitution        Int
+  intelligence        Int
+  wisdom              Int
+  charisma            Int
+  spellcastingId      String?
+  exhaustionLevel     Int?
+
+  spellcasting        CharacterSpellcasting?
+
+  skills              CharacterSkill[]
+  inventories         Inventory[]
+  characterClasses    CharacterClass[]
+  profiencies         CharacterProficiency[]
+  currencies          CharacterCurrency[]
+  conditions          CharacterCondition[]
+}
+
+model ExhaustionEffect {
+  id              String      @id @default(uuid())
+  level           Int
+  description     String
+}
+
+model CharacterCondition {
+  characterId       String
+  conditionId       String
+
+  character         Character       @relation(fields: [characterId], references: [id])
+  condition         Condition       @relation(fields: [conditionId], references: [id])
+
+  @@id([characterId, conditionId])
+}
+
+model Condition {
+  id                  String                @id @default(uuid())
+  name                String  
+  slug                String                @unique
+  description         String
+
+  conditionEffects    ConditionEffect[]
+  characters          CharacterCondition[]
+}
+
+model ConditionEffect {
+  id              String      @id @default(uuid())
+  name            String      
+  description     String
+  conditionId     String
+
+  condition       Condition   @relation(fields: [conditionId], references: [id])
+}
+
+model CharacterSpellcasting {
+  id              String              @id @default(uuid())
+  characterId     String              @unique
+  maxPrepared     Int?
+
+  character       Character           @relation(fields: [characterId], references: [id])
+  spellSlots      SpellSlots[]
+  spells          CharacterSpell[]
+}
+
+model SpellSlots {
+  characterSpellcastingId     String     
+  level                       Int          
+  maxSlots                    Int
+  slotsExpended               Int   
+
+  characterSpellcasting       CharacterSpellcasting   @relation(fields: [characterSpellcastingId], references: [id])
+
+  @@id([characterSpellcastingId, level])
+}
+
+model CharacterSpell {
+  characterSpellcastingId       String
+  spellId                       String
+  prepared                      Boolean
+
+  characterSpellcasting         CharacterSpellcasting   @relation(fields: [characterSpellcastingId], references: [id])
+  spell                         Spell                   @relation(fields: [spellId], references: [id])
+
+  @@id([characterSpellcastingId, spellId])
+}
+
+enum Ability {
+  STRENGTH
+  DEXTERITY
+  CONSTITUTION
+  INTELLIGENCE
+  WISDOM
+  CHARISMA
+}
+
+model CharacterClass {
+  characterId         String
+  baseClassId         String
+  subClassId          String?
+
+  character           Character     @relation(fields: [characterId], references: [id])
+  baseClass           BaseClass     @relation(fields: [baseClassId], references: [id])
+  subClass            SubClass?     @relation(fields: [subClassId], references: [id])
+
+  @@id([characterId, baseClassId])
+}
+
+model CharacterSkill {
+  characterId         String
+  skill               Skill
+  proficient          Boolean
+  expert              Boolean
+
+  character           Character       @relation(fields: [characterId], references: [id])
+
+  @@id([characterId, skill])
+}
+
+enum Skill {
+  ACROBATICS
+  ANIMAL_HANDLING
+  ARCANA
+  ATHLETICS
+  DECEPTION
+  HISTORY
+  INSIGHT
+  INTIMIDATION
+  INVESTIGATION
+  MEDICINE
+  NATURE
+  PERCEPTION
+  PERFORMANCE
+  PERSUASION
+  RELIGION
+  SLEIGHT_OF_HAND
+  STEALTH
+  SURVIVAL
+}
+
+model CharacterProficiency {
+  characterId       String
+  type              ProficiencyType
+  typeId            String
+  sourceType        ProficiencySource
+  sourceTypeId      String
+
+  character         Character     @relation(fields: [characterId], references: [id])
+
+  @@index([typeId, type], name: "type_typeId_idx")
+  @@index([sourceTypeId, sourceType], name: "sourceType_sourceTypeId_idx")
+
+  @@id([characterId, typeId])
+}
+
+enum ProficiencyType {
+  WEAPON
+  ARMOR
+  LANGUAGE
+  TOOL
+}
+
+enum ProficiencySource {
+  CLASS
+  SUB_CLASS
+  RACE
+  SUB_RACE
+}
+
+model Languages {
+  id              String      @id @default(uuid())
+  name            String
+  slug            String      @unique
+  description     String
+}
+
+model Currency {
+  id                      String                @id @default(uuid())
+  name                    String
+  slug                    String                @unique
+  conversion              Int
+
+  characterCurrencies     CharacterCurrency[]
+}
+
+model CharacterCurrency {
+  characterId         String
+  currencyId          String
+  amount              Int
+
+  character           Character       @relation(fields: [characterId], references: [id])
+  currency            Currency        @relation(fields: [currencyId], references: [id])
+
+  @@id([characterId, currencyId])
+}
+
+model Spell {
+  id                  String              @id @default(uuid())
+  name                String
+  slug                String              @unique
+  description         String
+  level               Int
+  verbal              Boolean
+  somatic             Boolean
+  material            Boolean
+
+  spellMaterials      SpellMaterial[]
+  characterSpells     CharacterSpell[]
+}
+
+model SpellMaterial {
+  spellId       String
+  materialId    String
+
+  spell         Spell         @relation(fields: [spellId], references: [id])
+  material      Material      @relation(fields: [materialId], references: [id])
+
+  @@id([spellId, materialId])
+}
+
+model Material {
+  id                String            @id @default(uuid())
+  name              String
+  slug              String            @unique
+  materialType      MaterialType
+  materialTypeId    String
+
+  spellMaterials    SpellMaterial[]
+
+  @@index([materialTypeId, materialType], name: "materialType_materialTypeId_idx")
+}
+
+enum MaterialType {
+  ITEM
+}
+
+model MagicItem {
+  itemId                        String
+  magicItemType                 MagicItemType
+  requiresAttunement            Boolean
+
+  @@index([itemId, magicItemType], name: "magicItemType_itemId_idx")
+
+  @@id([itemId, magicItemType])
+}
+
+enum MagicItemType {
+  ITEM
+  WEAPON
+  ARMOR
 }
