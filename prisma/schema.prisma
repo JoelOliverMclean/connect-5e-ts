@@ -19,6 +19,7 @@ model Profile {
   displayName   String    
 
   campaigns     Campaign[]
+  sources       Source[]
 }
 
 model Campaign {
@@ -30,71 +31,118 @@ model Campaign {
   ownerProfile    Profile     @relation(fields: [ownerProfileId], references: [id])
 }
 
+model Source {
+  id                    String      @id @default(uuid())
+  name                  String
+  slug                  String      @unique
+  description           String
+  ownerProfileId        String
+
+  ownerProfile          Profile     @relation(fields: [ownerProfileId], references: [id])
+
+  races                 Race[]
+  subRaces              SubRace[]
+  raceFeatures          RaceFeature[]
+  materials             Material[]
+  baseClasses           BaseClass[]
+  subClasses            SubClass[]
+  classFeatures         ClassFeature[]
+  ammunitions           Ammunition[]
+  items                 Item[]
+  weapons               Weapon[]
+  weaponProperties      WeaponProperty[]
+  armors                Armor[]
+  conditions            Condition[]
+  languages             Language[]
+  currencies            Currency[]
+  spells                Spell[]
+}
+
 model Race {
   id            String            @id @default(uuid())
   name          String
-  slug          String            @unique
+  slug          String
   description   String
-
+  sourceId      String
+  
+  source        Source            @relation(fields: [sourceId], references: [id])
   subRaces      SubRace[]
   features      RaceFeature[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model SubRace {
   id            String            @id @default(uuid())
   name          String
-  slug          String            @unique
+  slug          String
   description   String
   raceId        String
-
+  sourceId      String
+  
+  source        Source            @relation(fields: [sourceId], references: [id])
   race          Race              @relation(fields: [raceId], references: [id])
   features      RaceFeature[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model RaceFeature {
   id                String            @id @default(uuid())
   name              String
-  slug              String            @unique
+  slug              String
   description       String
   type              FeatureType
   maxUses           Int?
   refreshPeriod     RefreshPeriod?
   raceId            String
   subRaceId         String?
-
+  sourceId          String
+  
+  source            Source            @relation(fields: [sourceId], references: [id])
   race              Race              @relation(fields: [raceId], references: [id])
   subRace           SubRace?          @relation(fields: [subRaceId], references: [id])
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model BaseClass {
   id                  String              @id @default(uuid())
-  name                String              @unique
-  slug                String              @unique
+  name                String
+  slug                String
   description         String
   hitDice             String  
-
+  sourceId            String
+  
+  source              Source              @relation(fields: [sourceId], references: [id])
   subClasses          SubClass[]
   features            ClassFeature[]
   characterClasses    CharacterClass[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model SubClass {
   id                  String              @id @default(uuid())
-  name                String              @unique
-  slug                String              @unique
+  name                String
+  slug                String
   description         String
   minLevel            Int
   baseClassId         String    
-
+  sourceId            String
+  
+  source              Source              @relation(fields: [sourceId], references: [id])
   baseClass           BaseClass           @relation(fields: [baseClassId], references: [id])
   features            ClassFeature[]
   characterClasses    CharacterClass[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model ClassFeature {
   id              String            @id @default(uuid())
   name            String
-  slug            String            @unique
+  slug            String
   levelGained     Int
   type            FeatureType       @default(FEATURE)
   description     String
@@ -102,9 +150,13 @@ model ClassFeature {
   refreshPeriod   RefreshPeriod?
   subClassId      String?
   baseClassId     String
-
+  sourceId        String
+  
+  source          Source            @relation(fields: [sourceId], references: [id])
   baseClass       BaseClass         @relation(fields: [baseClassId], references: [id])
   subClass        SubClass?         @relation(fields: [subClassId], references: [id])
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 enum RefreshPeriod {
@@ -128,6 +180,7 @@ model Inventory {
   characterId             String?
 
   character               Character?          @relation(fields: [characterId], references: [id])
+  items                   InventoryItem[]
 }
 
 enum InventoryType {
@@ -140,6 +193,9 @@ model InventoryItem {
   name          String    
   itemType      InventoryItemType
   referenceId   String
+  inventoryId   String
+
+  inventory     Inventory           @relation(fields: [inventoryId], references: [id])
 
   @@index([referenceId, itemType], name: "item_reference_idx")
 }
@@ -154,34 +210,47 @@ enum InventoryItemType {
 }
 
 model Ammunition {
-  id            String      @id @default(uuid())
+  id            String            @id @default(uuid())
   name          String
-  slug          String      @unique
+  slug          String    
   description   String
-
+  sourceId      String
+  
+  source        Source            @relation(fields: [sourceId], references: [id])
   weapons       Weapon[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model Item {
-  id            String      @id @default(uuid())
+  id            String            @id @default(uuid())
   name          String
-  slug          String      @unique
+  slug          String
   description   String
+  sourceId      String
+  
+  source        Source            @relation(fields: [sourceId], references: [id])
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model Weapon {
   id              String                        @id @default(uuid())
   name            String    
-  slug            String                        @unique
+  slug            String
   description     String
   rangeFt         Int
   longRangeFt     Int?
   type            WeaponType
   ammunitionId    String?
-
+  sourceId        String
+  
+  source          Source                        @relation(fields: [sourceId], references: [id])
   ammunition      Ammunition?                   @relation(fields: [ammunitionId], references: [id])
   damages         WeaponDamage[]
   properties      WeaponPropertiesOnWeapon[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 enum WeaponType {
@@ -190,17 +259,22 @@ enum WeaponType {
 }
 
 model WeaponProperty {
-  id            String    @id @default(uuid())
+  id            String                        @id @default(uuid())
   name          String
-  slug          String    @unique
+  slug          String 
   description   String
-
+  sourceId      String
+  
+  source        Source                        @relation(fields: [sourceId], references: [id])
   weapons       WeaponPropertiesOnWeapon[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model WeaponPropertiesOnWeapon {
   weaponId      String
   propertyId    String
+  sourceId      String
 
   weapon        Weapon          @relation(fields: [weaponId], references: [id])
   property      WeaponProperty  @relation(fields: [propertyId], references: [id])
@@ -209,13 +283,14 @@ model WeaponPropertiesOnWeapon {
 }
 
 model WeaponDamage {
-  id            String        @id @default(uuid())
   weaponId      String
   diceCount     Int
   dice          String
   type          DamageType
   
   weapon        Weapon        @relation(fields: [weaponId], references: [id])
+
+  @@id([weaponId, type])
 }
 
 enum DamageType {
@@ -244,6 +319,11 @@ model Armor {
   baseAC                Int?
   bonusAC               Int?
   type                  ArmorType
+  sourceId              String
+  
+  source                Source            @relation(fields: [sourceId], references: [id])
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 enum ArmorType {
@@ -299,9 +379,13 @@ model Condition {
   name                String  
   slug                String                @unique
   description         String
-
+  sourceId            String
+  
+  source              Source                @relation(fields: [sourceId], references: [id])
   conditionEffects    ConditionEffect[]
   characters          CharacterCondition[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model ConditionEffect {
@@ -405,7 +489,7 @@ model CharacterProficiency {
   sourceType        ProficiencySource
   sourceTypeId      String
 
-  character         Character     @relation(fields: [characterId], references: [id])
+  character         Character             @relation(fields: [characterId], references: [id])
 
   @@index([typeId, type], name: "type_typeId_idx")
   @@index([sourceTypeId, sourceType], name: "sourceType_sourceTypeId_idx")
@@ -427,11 +511,16 @@ enum ProficiencySource {
   SUB_RACE
 }
 
-model Languages {
+model Language {
   id              String      @id @default(uuid())
   name            String
   slug            String      @unique
   description     String
+  sourceId        String
+  
+  source          Source                @relation(fields: [sourceId], references: [id])
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model Currency {
@@ -439,8 +528,12 @@ model Currency {
   name                    String
   slug                    String                @unique
   conversion              Int
-
+  sourceId                String
+  
+  source                  Source                @relation(fields: [sourceId], references: [id])
   characterCurrencies     CharacterCurrency[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model CharacterCurrency {
@@ -463,9 +556,14 @@ model Spell {
   verbal              Boolean
   somatic             Boolean
   material            Boolean
+  sourceId            String
+  
+  source              Source                @relation(fields: [sourceId], references: [id])
 
   spellMaterials      SpellMaterial[]
   characterSpells     CharacterSpell[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 model SpellMaterial {
@@ -484,10 +582,14 @@ model Material {
   slug              String            @unique
   materialType      MaterialType
   materialTypeId    String
-
+  sourceId          String
+    
+  source            Source            @relation(fields: [sourceId], references: [id])
   spellMaterials    SpellMaterial[]
 
   @@index([materialTypeId, materialType], name: "materialType_materialTypeId_idx")
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
 }
 
 enum MaterialType {
