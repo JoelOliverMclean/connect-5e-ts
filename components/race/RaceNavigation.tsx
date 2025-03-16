@@ -21,6 +21,7 @@ export function RaceNavigation({
     <Link
       href={`/source/${race.source.slug}/subraces/${subrace.slug}`}
       key={index}
+      className="primary-button"
     >
       {subrace.name}
     </Link>
