@@ -21,7 +21,7 @@ function HomeProfile({
 
   return (
     <div className="flex flex-col gap-2">
-      <h4 className="text-red-600">My Profile</h4>
+      <h4 className="">My Profile</h4>
       <div className="">
         <span className="pe-2 font-bold">Display Name:</span>
         {profile?.displayName}

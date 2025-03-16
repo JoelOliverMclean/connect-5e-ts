@@ -22,7 +22,7 @@ function SourceRaces({
 
   const raceSection = (
     <div className="flex flex-col gap-2">
-      <h4 className="text-red-600">Races</h4>
+      <h4 className="">Races</h4>
       <div className="flex flex-col gap-2">
         {source.races.length > 0 ? (
           source.races.map((race, index) => raceCell(race, index))
@@ -30,7 +30,7 @@ function SourceRaces({
           <>
             <div className="text-center opacity-50">No races yet</div>
             <Link
-              href={`/source/${source.slug}/races/new`}
+              href={`/source/${source.slug}/new/race`}
               className="primary-button self-center"
             >
               Create new race
@@ -56,7 +56,7 @@ function SourceRaces({
 
   const subRaceSection = (
     <div className="flex flex-col gap-2">
-      <h4 className="text-red-600">Subraces</h4>
+      <h4 className="">Subraces</h4>
       <div className="flex flex-col gap-2">
         {source.subRaces.length > 0 ? (
           source.subRaces.map((subRace, index) => subRaceCell(subRace, index))
@@ -64,7 +64,7 @@ function SourceRaces({
           <>
             <div className="text-center opacity-50">No sub-races yet</div>
             <Link
-              href={`/source/${source.slug}/subraces/new`}
+              href={`/source/${source.slug}/new/subrace`}
               className="primary-button self-center"
             >
               Create new subrace
@@ -76,10 +76,10 @@ function SourceRaces({
   );
 
   return (
-    <>
+    <div className="flex flex-col gap-4 p-4">
       {raceSection}
       {subRaceSection}
-    </>
+    </div>
   );
 }
 

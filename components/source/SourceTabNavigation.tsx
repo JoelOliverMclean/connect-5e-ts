@@ -1,8 +1,15 @@
 "use client";
-import type { Race, Source, SubRace } from "@prisma/client";
+import type {
+  BaseClass,
+  Race,
+  Source,
+  SubClass,
+  SubRace,
+} from "@prisma/client";
 import React, { useState } from "react";
 import SourceRaces from "./SourceRaces";
 import TabNavigation from "../navigation/TabNavigation";
+import SourceClasses from "./SourceClasses";
 
 function SourceTabNavigation({
   source,
@@ -10,6 +17,8 @@ function SourceTabNavigation({
   source: Source & {
     races: Race[];
     subRaces: SubRace[];
+    baseClasses: BaseClass[];
+    subClasses: SubClass[];
   };
 }>) {
   const tabs = [
@@ -26,16 +35,11 @@ function SourceTabNavigation({
   ];
   const [tab, setTab] = useState<string | null | undefined>(tabs[0]);
 
-  const raceTab = (
-    <div className="flex flex-col gap-4 p-4">
-      <SourceRaces source={source} />
-    </div>
-  );
-
   return (
     <>
       <TabNavigation tabs={tabs} activeTab={tab} setActiveTab={setTab} />
-      {tab === "Races" && raceTab}
+      {tab === "Races" && <SourceRaces source={source} />}
+      {tab === "Classes" && <SourceClasses source={source} />}
     </>
   );
 }

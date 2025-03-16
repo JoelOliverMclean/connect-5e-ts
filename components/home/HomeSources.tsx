@@ -19,7 +19,7 @@ async function HomeSources({
 
   return (
     <div className="flex flex-col gap-2">
-      <h4 className="text-red-600">My Sources</h4>
+      <h4 className="">My Sources</h4>
       <div className="flex flex-col gap-2">
         {sources.length > 0 ? (
           sources.map((source, index) => sourceCell(source, index))

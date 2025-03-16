@@ -16,6 +16,8 @@ async function SourcePage({
     include: {
       races: true,
       subRaces: true,
+      baseClasses: true,
+      subClasses: true,
     },
   });
 
