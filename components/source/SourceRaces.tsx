@@ -42,9 +42,16 @@ function SourceRaces({
   );
 
   const subRaceCell = (subRace: SubRace, index: number) => (
-    <div key={index} className="primary-button">
-      <p>{subRace.name}</p>
-    </div>
+    <Link
+      href={`/source/${source.slug}/subraces/${subRace.slug}`}
+      key={index}
+      className="primary-button"
+    >
+      <p>
+        {subRace.name} (
+        {source.races.find((race) => race.id === subRace.raceId)?.name})
+      </p>
+    </Link>
   );
 
   const subRaceSection = (

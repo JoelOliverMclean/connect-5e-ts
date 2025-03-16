@@ -1,7 +1,6 @@
 import React from "react";
 import SourceHeader from "@/components/source/SourceHeader";
 import { redirect } from "next/navigation";
-import { RaceNavigation } from "@/components/race/RaceNavigation";
 import { prisma } from "@/lib/prisma";
 import { SubraceNavigation } from "@/components/subrace/SubraceNavigation";
 
@@ -33,7 +32,7 @@ async function SubracePage({
     <div className="flex flex-col">
       <SourceHeader source={subRace.source}>
         <div>
-          <p>Race</p>
+          <p>{subRace.race.name} Subrace</p>
           <h4>{subRace.name}</h4>
         </div>
       </SourceHeader>
