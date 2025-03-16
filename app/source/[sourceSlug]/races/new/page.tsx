@@ -1,10 +1,8 @@
 import RaceForm from "@/components/forms/RaceForm";
 import React from "react";
-import { PrismaClient } from "@prisma/client";
 import { redirect } from "next/navigation";
 import SourceHeader from "@/components/source/SourceHeader";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 async function NewRacePage({
   params,

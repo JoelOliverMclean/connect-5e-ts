@@ -1,10 +1,8 @@
-import React, { FormEvent, FormEventHandler, ReactElement } from "react";
-import { PrismaClient } from "@prisma/client";
+import React from "react";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import CreateProfileForm from "@/components/forms/CreateProfileForm";
-
-const prisma = new PrismaClient();
+import ProfileForm from "@/components/forms/ProfileForm";
+import { prisma } from "@/lib/prisma";
 
 async function CreateProfilePage() {
   const user = await currentUser();
@@ -23,7 +21,7 @@ async function CreateProfilePage() {
   return (
     <div className="flex flex-col gap-4 p-4">
       <h4>Create your profile</h4>
-      <CreateProfileForm />
+      <ProfileForm />
     </div>
   );
 }

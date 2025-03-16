@@ -3,9 +3,8 @@ import HomeCharacters from "@/components/home/HomeCharacters";
 import HomeProfile from "@/components/home/HomeProfile";
 import HomeSources from "@/components/home/HomeSources";
 import { currentUser } from "@clerk/nextjs/server";
-import { PrismaClient, type Source } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { type Source } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
   const user = await currentUser();

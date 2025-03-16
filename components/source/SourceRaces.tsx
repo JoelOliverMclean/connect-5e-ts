@@ -1,13 +1,14 @@
-import type { Source, Race } from "@prisma/client";
+import type { Source, Race, SubRace } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 
 function SourceRaces({
   source,
-  races,
 }: Readonly<{
-  source: Source;
-  races: Race[];
+  source: Source & {
+    races: Race[];
+    subRaces: SubRace[];
+  };
 }>) {
   const raceCell = (race: Race, index: number) => (
     <Link
@@ -19,12 +20,12 @@ function SourceRaces({
     </Link>
   );
 
-  return (
+  const raceSection = (
     <div className="flex flex-col gap-2">
       <h4 className="text-red-600">Races</h4>
       <div className="flex flex-col gap-2">
-        {races.length > 0 ? (
-          races.map((race, index) => raceCell(race, index))
+        {source.races.length > 0 ? (
+          source.races.map((race, index) => raceCell(race, index))
         ) : (
           <>
             <div className="text-center opacity-50">No races yet</div>
@@ -38,6 +39,40 @@ function SourceRaces({
         )}
       </div>
     </div>
+  );
+
+  const subRaceCell = (subRace: SubRace, index: number) => (
+    <div key={index} className="primary-button">
+      <p>{subRace.name}</p>
+    </div>
+  );
+
+  const subRaceSection = (
+    <div className="flex flex-col gap-2">
+      <h4 className="text-red-600">Subraces</h4>
+      <div className="flex flex-col gap-2">
+        {source.subRaces.length > 0 ? (
+          source.subRaces.map((subRace, index) => subRaceCell(subRace, index))
+        ) : (
+          <>
+            <div className="text-center opacity-50">No sub-races yet</div>
+            <Link
+              href={`/source/${source.slug}/subraces/new`}
+              className="primary-button self-center"
+            >
+              Create new subrace
+            </Link>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      {raceSection}
+      {subRaceSection}
+    </>
   );
 }
 

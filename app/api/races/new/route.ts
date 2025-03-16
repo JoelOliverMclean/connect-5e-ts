@@ -1,10 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse, type NextRequest } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { isNullOrBlank } from "@/utils/textUtils";
 import slugify from "slugify";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();

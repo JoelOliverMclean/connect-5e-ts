@@ -1,9 +1,8 @@
 import React from "react";
-import { PrismaClient } from "@prisma/client";
 import SourceHeader from "@/components/source/SourceHeader";
 import { redirect } from "next/navigation";
-
-const prisma = new PrismaClient();
+import { RaceNavigation } from "@/components/race/RaceNavigation";
+import { prisma } from "@/lib/prisma";
 
 async function RacePage({
   params,
@@ -15,6 +14,7 @@ async function RacePage({
   const race = await prisma.race.findFirst({
     include: {
       source: true,
+      subRaces: true,
     },
     where: {
       slug: raceSlug,
@@ -30,14 +30,13 @@ async function RacePage({
 
   return (
     <div className="flex flex-col">
-      <SourceHeader source={race.source} />
-      <div className="flex flex-col gap-4 p-4">
+      <SourceHeader source={race.source}>
         <div>
           <p>Race</p>
           <h4>{race.name}</h4>
         </div>
-        <p>{race.description}</p>
-      </div>
+      </SourceHeader>
+      <RaceNavigation race={race} />
     </div>
   );
 }

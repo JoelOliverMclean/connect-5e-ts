@@ -10,7 +10,7 @@ export function BaseForm({
   onSubmitData,
   error,
 }: Readonly<{
-  children: ReactNode;
+  children?: ReactNode;
   onSubmitData: (data: BaseFormData) => void;
   error: string | null | undefined;
 }>) {

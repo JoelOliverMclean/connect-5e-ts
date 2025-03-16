@@ -3,7 +3,7 @@ import { getFormJson } from "@/utils/formUtils";
 import { redirect } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 
-function CreateProfileForm() {
+function ProfileForm() {
   const [error, setError] = useState<string | null | undefined>(null);
 
   const submitProfileForm = (event: FormEvent<HTMLFormElement>) => {
@@ -44,4 +44,4 @@ function CreateProfileForm() {
   );
 }
 
-export default CreateProfileForm;
+export default ProfileForm;
