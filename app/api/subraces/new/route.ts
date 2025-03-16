@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { isNullOrBlank } from "@/utils/textUtils";
 import slugify from "slugify";
 import { prisma } from "@/lib/prisma";
+import { Race, SubRace } from "@prisma/client";
 
 export async function POST(request: NextRequest) {
   const { userId } = await auth();
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
 
   if (!profile) {
     return NextResponse.json(
-      { error: "Profile required to create race" },
+      { error: "Profile required to create subrace" },
       { status: 400 },
     );
   }
@@ -33,6 +34,7 @@ export async function POST(request: NextRequest) {
 
   if (
     isNullOrBlank(data.sourceId) ||
+    isNullOrBlank(data.race) ||
     isNullOrBlank(data.name) ||
     isNullOrBlank(data.description)
   ) {
@@ -52,32 +54,48 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Source not found" }, { status: 404 });
   }
 
+  const race = await prisma.race.findUnique({
+    where: {
+      source_slug_uk: { sourceId: source.id, slug: data.race },
+    },
+  });
+
+  if (!race) {
+    return NextResponse.json({ error: "Race not found" }, { status: 404 });
+  }
+
   const slug = slugify(data.name, { lower: true });
 
-  const conflictingRace = await prisma.race.count({
+  const conflictingSubRace = await prisma.subRace.count({
     where: {
       sourceId: data.sourceId,
       slug: slug,
     },
   });
 
-  if (conflictingRace) {
-    return NextResponse.json({ error: "Race already exists" }, { status: 400 });
+  if (conflictingSubRace) {
+    return NextResponse.json(
+      { error: "Subrace already exists" },
+      { status: 400 },
+    );
   }
 
-  const newRace = await prisma.race.create({
+  const newSubrace = await prisma.subRace.create({
     data: {
-      ...data,
-      slug,
+      raceId: race.id,
+      name: data.name,
+      slug: slug,
+      description: data.description,
+      sourceId: source.id,
     },
   });
 
-  if (!newRace) {
+  if (!newSubrace) {
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 },
     );
   }
 
-  return NextResponse.json(newRace);
+  return NextResponse.json(newSubrace);
 }

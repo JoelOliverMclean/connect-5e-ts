@@ -26,7 +26,7 @@ async function NewSubracePage({
     <div className="flex flex-col">
       <SourceHeader source={source} />
       <div className="flex flex-col gap-4 p-4">
-        <h4>Create new subrace</h4>
+        <h4>New subrace</h4>
         <SubraceForm source={source} />
       </div>
     </div>

@@ -16,10 +16,13 @@ function SubraceForm({
   const [error, setError] = useState<string | null | undefined>(null);
 
   const submitSubraceForm = (data: BaseFormData) => {
-    apiPost("/api/subraces/new", data).then(({ response, data }) => {
+    apiPost("/api/subraces/new", {
+      ...data,
+      sourceId: source.id,
+    }).then(({ response, data }) => {
       if (response.status === 200) {
         setError(null);
-        redirect(`/source/${source.slug}/races/${data.slug}`);
+        redirect(`/source/${source.slug}/subraces/${data.slug}`);
       } else {
         setError(data.error);
       }
@@ -34,10 +37,12 @@ function SubraceForm({
 
   return (
     <BaseForm onSubmitData={submitSubraceForm} error={error}>
-      <Select className="" name="race">
+      <Select name="race">
         <option value={undefined}>Choose a race...</option>
         {source.races.map((race, index) => raceSelectOption(race, index))}
       </Select>
+      <input type="text" name="name" placeholder="Subrace name..." />
+      <textarea name="description" placeholder="Subrace description..." />
     </BaseForm>
   );
 }

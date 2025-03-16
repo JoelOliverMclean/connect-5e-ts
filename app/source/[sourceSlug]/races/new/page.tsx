@@ -23,7 +23,7 @@ async function NewRacePage({
     <div className="flex flex-col">
       <SourceHeader source={source} />
       <div className="flex flex-col gap-4 p-4">
-        <h4>Create new race</h4>
+        <h4>New race</h4>
         <RaceForm source={source} />
       </div>
     </div>
