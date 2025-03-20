@@ -61,7 +61,9 @@ export function ClassNavigation({
 
   return (
     <>
-      <TabNavigation tabs={tabs} activeTab={tab} setActiveTab={setTab} />
+      <div className="bg-red-800">
+        <TabNavigation tabs={tabs} activeTab={tab} setActiveTab={setTab} />
+      </div>
       {tab === "About" && aboutTab}
       {tab === "Subclasses" && subClassesTab}
     </>

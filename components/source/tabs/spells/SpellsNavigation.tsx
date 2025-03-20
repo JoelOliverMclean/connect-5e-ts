@@ -48,11 +48,13 @@ function SpellsNavigation(props: SpellsNavigationProps) {
 
   return (
     <div>
-      <TabNavigation
-        tabs={tabs}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
+      <div className="bg-red-800">
+        <TabNavigation
+          tabs={tabs}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+        />
+      </div>
       <div className="p-4">{spellList(tabs.indexOf(activeTab))}</div>
     </div>
   );
