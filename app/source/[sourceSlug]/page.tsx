@@ -18,6 +18,14 @@ async function SourcePage({
       subRaces: true,
       baseClasses: true,
       subClasses: true,
+      spells: true,
+      weapons: true,
+      armors: true,
+      ammunitions: true,
+      items: true,
+      conditions: true,
+      languages: true,
+      currencies: true,
     },
   });
 

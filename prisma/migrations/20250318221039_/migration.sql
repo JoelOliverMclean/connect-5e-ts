@@ -1,5 +1,0 @@
--- CreateEnum
-CREATE TYPE "ProficiencyType" AS ENUM ('WEAPON', 'ARMOR', 'LANGUAGE_READ', 'LANGUAGE_WRITE', 'LANGUAGE_SPEAK', 'TOOL', 'SAVING_THROWS');
-
--- CreateEnum
-CREATE TYPE "ProficiencySource" AS ENUM ('CLASS', 'SUB_CLASS', 'RACE', 'SUB_RACE');

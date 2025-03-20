@@ -4,41 +4,40 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { SubclassNavigation } from "@/components/source/tabs/subclass/SubclassNavigation";
 
-async function SubclassPage({
+async function SpellPage({
   params,
 }: {
-  params: Promise<{ sourceSlug: string; subclassSlug: string }>;
+  params: Promise<{ sourceSlug: string; spellSlug: string }>;
 }) {
-  const { sourceSlug, subclassSlug } = await params;
+  const { sourceSlug, spellSlug } = await params;
 
-  const subClass = await prisma.subClass.findFirst({
+  const spell = await prisma.spell.findFirst({
     include: {
       source: true,
-      baseClass: true,
     },
     where: {
-      slug: subclassSlug,
+      slug: spellSlug,
       source: {
         slug: sourceSlug,
       },
     },
   });
 
-  if (!subClass) {
+  if (!spell) {
     redirect(`/source/${sourceSlug}`);
   }
 
   return (
     <div className="flex flex-col">
-      <SourceHeader source={subClass.source}>
+      <SourceHeader source={spell.source}>
         <div>
-          <p>{subClass.baseClass.name} Subclass</p>
-          <h4>{subClass.name}</h4>
+          <p>{spell.level === 0 ? "Cantrip" : `Level ${spell.level} spell`}</p>
+          <h4>{spell.name}</h4>
         </div>
       </SourceHeader>
-      <SubclassNavigation subclass={subClass} />
+      {/* <SpellNavigation spell={spell} /> */}
     </div>
   );
 }
 
-export default SubclassPage;
+export default SpellPage;

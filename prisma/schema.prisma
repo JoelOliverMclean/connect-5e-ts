@@ -511,7 +511,7 @@ model SpellSlots {
 }
 
 model CharacterSpell {
-  characterId       String
+  characterId                   String
   spellId                       String
   prepared                      Boolean
 
@@ -637,6 +637,9 @@ model Spell {
   verbal              Boolean
   somatic             Boolean
   material            Boolean
+  duration            String
+  range               String
+  castingTime         String
   sourceId            String
   
   source              Source                @relation(fields: [sourceId], references: [id])

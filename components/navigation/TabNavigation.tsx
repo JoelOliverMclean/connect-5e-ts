@@ -34,7 +34,7 @@ function TabNavigation({
   const tabElement = (name: string, index: number) => (
     <div
       key={index}
-      className={`cursor-pointer rounded-full px-4 py-2 duration-300 ${
+      className={`cursor-pointer rounded-full px-4 py-2 whitespace-nowrap duration-300 ${
         activeTab === name && "bg-red-950"
       }`}
       onClick={() => selectTab(name, index)}
@@ -47,7 +47,7 @@ function TabNavigation({
     <>
       <div
         ref={navBarRef}
-        className="disable-scrollbars flex gap-2 overflow-x-auto bg-red-800 p-2"
+        className="disable-scrollbars flex gap-2 overflow-x-auto p-2"
       >
         {tabs.map((tab, index) => tabElement(tab, index))}
       </div>

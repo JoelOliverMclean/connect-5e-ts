@@ -1,22 +1,22 @@
 "use client";
-import type { BaseClass, Source, SubClass } from "@prisma/client";
+import type { Race, Source, SubRace } from "@prisma/client";
 import React, { useState } from "react";
-import TabNavigation from "../../navigation/TabNavigation";
+import TabNavigation from "../../../navigation/TabNavigation";
 import Link from "next/link";
 
-export function SubclassNavigation({
-  subclass,
+export function SubraceNavigation({
+  subrace,
 }: Readonly<{
-  subclass: SubClass & {
+  subrace: SubRace & {
     source: Source;
-    baseClass: BaseClass;
+    race: Race;
   };
 }>) {
-  const tabs = ["About", "Features", "Alterations"];
+  const tabs = ["About", "Features", "Traits"];
   const [tab, setTab] = useState<string | null | undefined>(tabs[0]);
 
   const aboutTab = (
-    <div className="flex flex-col p-4">{subclass.description}</div>
+    <div className="flex flex-col p-4">{subrace.description}</div>
   );
 
   return (

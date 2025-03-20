@@ -7,7 +7,7 @@ import type {
   SubClass,
 } from "@prisma/client";
 import React, { useState } from "react";
-import TabNavigation from "../../navigation/TabNavigation";
+import TabNavigation from "../../../navigation/TabNavigation";
 import Link from "next/link";
 
 export function ClassNavigation({

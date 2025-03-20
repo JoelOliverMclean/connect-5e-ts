@@ -3,13 +3,15 @@ import type {
   BaseClass,
   Race,
   Source,
+  Spell,
   SubClass,
   SubRace,
 } from "@prisma/client";
 import React, { useState } from "react";
-import SourceRaces from "./SourceRaces";
+import SourceRaces from "./tabs/SourceRaces";
 import TabNavigation from "../navigation/TabNavigation";
-import SourceClasses from "./SourceClasses";
+import SourceClasses from "./tabs/SourceClasses";
+import SourceSpells from "./tabs/SourceSpells";
 
 function SourceTabNavigation({
   source,
@@ -19,6 +21,7 @@ function SourceTabNavigation({
     subRaces: SubRace[];
     baseClasses: BaseClass[];
     subClasses: SubClass[];
+    spells: Spell[];
   };
 }>) {
   const tabs = [
@@ -37,9 +40,12 @@ function SourceTabNavigation({
 
   return (
     <>
-      <TabNavigation tabs={tabs} activeTab={tab} setActiveTab={setTab} />
+      <div className="bg-red-800">
+        <TabNavigation tabs={tabs} activeTab={tab} setActiveTab={setTab} />
+      </div>
       {tab === "Races" && <SourceRaces source={source} />}
       {tab === "Classes" && <SourceClasses source={source} />}
+      {tab === "Spells" && <SourceSpells source={source} />}
     </>
   );
 }

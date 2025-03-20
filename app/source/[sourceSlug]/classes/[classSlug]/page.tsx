@@ -1,7 +1,7 @@
 import React from "react";
 import SourceHeader from "@/components/source/SourceHeader";
 import { redirect } from "next/navigation";
-import { ClassNavigation } from "@/components/source/class/ClassNavigation";
+import { ClassNavigation } from "@/components/source/tabs/class/ClassNavigation";
 import { prisma } from "@/lib/prisma";
 
 async function ClassPage({
