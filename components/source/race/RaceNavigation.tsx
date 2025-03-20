@@ -1,7 +1,7 @@
 "use client";
 import type { Race, Source, SubRace } from "@prisma/client";
 import React, { useState } from "react";
-import TabNavigation from "../navigation/TabNavigation";
+import TabNavigation from "../../navigation/TabNavigation";
 import Link from "next/link";
 
 export function RaceNavigation({

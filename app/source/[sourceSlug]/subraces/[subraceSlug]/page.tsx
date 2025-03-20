@@ -2,7 +2,7 @@ import React from "react";
 import SourceHeader from "@/components/source/SourceHeader";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { SubraceNavigation } from "@/components/subrace/SubraceNavigation";
+import { SubraceNavigation } from "@/components/source/subrace/SubraceNavigation";
 
 async function SubracePage({
   params,

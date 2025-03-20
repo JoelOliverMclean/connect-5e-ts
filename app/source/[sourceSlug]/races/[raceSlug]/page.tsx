@@ -1,7 +1,7 @@
 import React from "react";
 import SourceHeader from "@/components/source/SourceHeader";
 import { redirect } from "next/navigation";
-import { RaceNavigation } from "@/components/race/RaceNavigation";
+import { RaceNavigation } from "@/components/source/race/RaceNavigation";
 import { prisma } from "@/lib/prisma";
 
 async function RacePage({

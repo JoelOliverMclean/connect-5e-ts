@@ -2,7 +2,7 @@ import React from "react";
 import SourceHeader from "@/components/source/SourceHeader";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { SubclassNavigation } from "@/components/subclass/SubclassNavigation";
+import { SubclassNavigation } from "@/components/source/subclass/SubclassNavigation";
 
 async function SubclassPage({
   params,
