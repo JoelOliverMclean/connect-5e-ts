@@ -14,6 +14,9 @@ async function NewSpellPage({
 }) {
   const { sourceSlug } = await params;
   const source = await prisma.source.findUnique({
+    include: {
+      schools: true,
+    },
     where: {
       slug: sourceSlug,
     },

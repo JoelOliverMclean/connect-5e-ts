@@ -26,6 +26,7 @@ async function SourcePage({
       conditions: true,
       languages: true,
       currencies: true,
+      schools: true,
     },
   });
 

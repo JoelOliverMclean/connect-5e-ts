@@ -1,4 +1,4 @@
-import type { Source, Spell } from "@prisma/client";
+import type { MagicSchool, Source, Spell } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 import { FilePlus } from "lucide-react";
@@ -10,11 +10,16 @@ function SourceSpells({
 }: Readonly<{
   source: Source & {
     spells: Spell[];
+    schools: MagicSchool[];
   };
 }>) {
   return (
     <div className="flex flex-col">
-      <SpellsNavigation sourceSlug={source.slug} spells={source.spells} />
+      <SpellsNavigation
+        sourceSlug={source.slug}
+        spells={source.spells}
+        schools={source.schools}
+      />
     </div>
   );
 }

@@ -1,12 +1,13 @@
 "use client";
 import TabNavigation from "@/components/navigation/TabNavigation";
-import { Spell } from "@prisma/client";
+import { MagicSchool, Spell } from "@prisma/client";
 import Link from "next/link";
 import React, { useState } from "react";
 
 interface SpellsNavigationProps {
   sourceSlug: string;
   spells: Spell[];
+  schools: MagicSchool[];
 }
 
 function SpellsNavigation(props: SpellsNavigationProps) {

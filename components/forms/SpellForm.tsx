@@ -1,13 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import { BaseForm, BaseFormData } from "./BaseForm";
-import { Source } from "@prisma/client";
+import { MagicSchool, Source } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { apiPost } from "@/utils/apiUtils";
 import { Check } from "lucide-react";
 
 interface SpellFormProps {
-  source: Source;
+  source: Source & {
+    schools: MagicSchool[];
+  };
   level: number;
 }
 
@@ -51,10 +53,20 @@ function SpellForm({ source, level }: SpellFormProps) {
     </div>
   );
 
+  const spellSchoolOptions = source.schools.map((school, index) => (
+    <option key={index} value={school.id}>
+      {school.name}
+    </option>
+  ));
+
   return (
     <BaseForm onSubmitData={submitSpellForm} error={error}>
       <select defaultValue={level} name="level">
         {spellLevelOptions}
+      </select>
+      <select name="schoolId">
+        <option value={undefined}>Choose a school...</option>
+        {spellSchoolOptions}
       </select>
       <input type="text" name="name" placeholder="Name of spell" />
       <div className="flex justify-evenly">

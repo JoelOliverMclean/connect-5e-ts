@@ -1,6 +1,7 @@
 "use client";
 import type {
   BaseClass,
+  MagicSchool,
   Race,
   Source,
   Spell,
@@ -22,6 +23,7 @@ function SourceTabNavigation({
     baseClasses: BaseClass[];
     subClasses: SubClass[];
     spells: Spell[];
+    schools: MagicSchool[];
   };
 }>) {
   const tabs = [
