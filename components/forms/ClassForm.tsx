@@ -52,6 +52,7 @@ function ClassForm({
       <div className="flex flex-wrap justify-center gap-4 p-2">
         {hitDiceArray.map((hitDice, index) => (
           <div
+            key={index}
             className="flex cursor-pointer flex-col gap-1"
             onClick={() => setSelectedHitDice(hitDice)}
           >

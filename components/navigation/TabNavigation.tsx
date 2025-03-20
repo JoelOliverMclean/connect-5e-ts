@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef } from "react";
 
 function TabNavigation({
   tabs,
@@ -10,7 +10,24 @@ function TabNavigation({
   activeTab: string | null | undefined;
   setActiveTab: (tab: string) => void;
 }>) {
-  const selectTab = (name: string) => {
+  const navBarRef = useRef<HTMLDivElement>(null);
+  const selectTab = (name: string, index: number) => {
+    const tabRef = navBarRef.current?.children[index] as
+      | HTMLElement
+      | undefined;
+
+    if (tabRef && navBarRef.current) {
+      const containerWidth = navBarRef.current.offsetWidth;
+      const tabWidth = tabRef.offsetWidth;
+
+      const scrollLeft = tabRef.offsetLeft - containerWidth / 2 + tabWidth / 2;
+
+      navBarRef.current.scrollTo({
+        left: scrollLeft,
+        behavior: "smooth",
+      });
+    }
+
     setActiveTab(name);
   };
 
@@ -20,7 +37,7 @@ function TabNavigation({
       className={`cursor-pointer rounded-full px-4 py-2 duration-300 ${
         activeTab === name && "bg-red-950"
       }`}
-      onClick={() => selectTab(name)}
+      onClick={() => selectTab(name, index)}
     >
       {name}
     </div>
@@ -28,7 +45,10 @@ function TabNavigation({
 
   return (
     <>
-      <div className="flex gap-2 overflow-x-auto bg-red-800 p-2">
+      <div
+        ref={navBarRef}
+        className="disable-scrollbars flex gap-2 overflow-x-auto bg-red-800 p-2"
+      >
         {tabs.map((tab, index) => tabElement(tab, index))}
       </div>
     </>

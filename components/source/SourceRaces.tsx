@@ -1,6 +1,7 @@
 import type { Source, Race, SubRace } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
+import { FilePlus } from "lucide-react";
 
 function SourceRaces({
   source,
@@ -22,7 +23,14 @@ function SourceRaces({
 
   const raceSection = (
     <div className="flex flex-col gap-2">
-      <h4 className="">Races</h4>
+      <div className="flex items-center justify-between">
+        <h4 className="">Races</h4>
+        {source.races.length > 0 && (
+          <Link href={`/source/${source.slug}/new/race`}>
+            <FilePlus />
+          </Link>
+        )}
+      </div>
       <div className="flex flex-col gap-2">
         {source.races.length > 0 ? (
           source.races.map((race, index) => raceCell(race, index))
@@ -56,7 +64,14 @@ function SourceRaces({
 
   const subRaceSection = (
     <div className="flex flex-col gap-2">
-      <h4 className="">Subraces</h4>
+      <div className="flex items-center justify-between">
+        <h4 className="">Subraces</h4>
+        {source.subRaces.length > 0 && (
+          <Link href={`/source/${source.slug}/new/subrace`}>
+            <FilePlus />
+          </Link>
+        )}
+      </div>
       <div className="flex flex-col gap-2">
         {source.subRaces.length > 0 ? (
           source.subRaces.map((subRace, index) => subRaceCell(subRace, index))

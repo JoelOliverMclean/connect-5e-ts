@@ -1,4 +1,5 @@
 import { BaseClass, Source, SubClass } from "@prisma/client";
+import { FilePlus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -22,7 +23,14 @@ function SourceClasses({
 
   const classesSection = (
     <div className="flex flex-col gap-2">
-      <h4 className="">Classes</h4>
+      <div className="flex items-center justify-between">
+        <h4 className="">Classes</h4>
+        {source.baseClasses.length > 0 && (
+          <Link href={`/source/${source.slug}/new/class`}>
+            <FilePlus />
+          </Link>
+        )}
+      </div>
       <div className="flex flex-col gap-2">
         {source.baseClasses.length > 0 ? (
           source.baseClasses.map((baseClass, index) =>
@@ -63,7 +71,14 @@ function SourceClasses({
 
   const subClassesSection = (
     <div className="flex flex-col gap-2">
-      <h4 className="">Subclasses</h4>
+      <div className="flex items-center justify-between">
+        <h4 className="">Subclasses</h4>
+        {source.subClasses.length > 0 && (
+          <Link href={`/source/${source.slug}/new/subclass`}>
+            <FilePlus />
+          </Link>
+        )}
+      </div>
       <div className="flex flex-col gap-2">
         {source.subClasses.length > 0 ? (
           source.subClasses.map((subClass, index) =>
