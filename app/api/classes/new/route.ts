@@ -34,7 +34,8 @@ export async function POST(request: NextRequest) {
   if (
     isNullOrBlank(data.sourceId) ||
     isNullOrBlank(data.name) ||
-    isNullOrBlank(data.description)
+    isNullOrBlank(data.description) ||
+    isNullOrBlank(data.hitDice)
   ) {
     return NextResponse.json(
       { error: "Missing required fields" },
@@ -54,30 +55,33 @@ export async function POST(request: NextRequest) {
 
   const slug = slugify(data.name, { lower: true });
 
-  const conflictingRace = await prisma.race.count({
+  const conflictingClass = await prisma.baseClass.count({
     where: {
       sourceId: data.sourceId,
       slug: slug,
     },
   });
 
-  if (conflictingRace > 0) {
-    return NextResponse.json({ error: "Race already exists" }, { status: 400 });
+  if (conflictingClass > 0) {
+    return NextResponse.json(
+      { error: "Class already exists" },
+      { status: 400 },
+    );
   }
 
-  const newRace = await prisma.race.create({
+  const newClass = await prisma.baseClass.create({
     data: {
       ...data,
       slug,
     },
   });
 
-  if (!newRace) {
+  if (!newClass) {
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 },
     );
   }
 
-  return NextResponse.json(newRace);
+  return NextResponse.json(newClass);
 }
