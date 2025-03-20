@@ -28,13 +28,21 @@ export function RaceNavigation({
   );
 
   const subracesTab = (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col gap-4 p-4">
       {race.subRaces.length > 0 ? (
         <div className="grid grid-cols-1 gap-2">
           {race.subRaces.map((subrace, index) => subraceCell(subrace, index))}
         </div>
       ) : (
-        <div className="text-center opacity-50">No subraces</div>
+        <>
+          <div className="text-center opacity-50">No sub-races yet</div>
+          <Link
+            href={`/source/${race.source.slug}/new/subrace`}
+            className="primary-button self-center"
+          >
+            Create new subrace
+          </Link>
+        </>
       )}
     </div>
   );

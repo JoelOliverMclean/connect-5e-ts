@@ -38,7 +38,7 @@ export function ClassNavigation({
   );
 
   const subClassesTab = (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col gap-4 p-4">
       {baseClass.subClasses.length > 0 ? (
         <div className="grid grid-cols-1 gap-2">
           {baseClass.subClasses.map((subClass, index) =>
@@ -46,7 +46,15 @@ export function ClassNavigation({
           )}
         </div>
       ) : (
-        <div className="text-center opacity-50">No subclasses</div>
+        <>
+          <div className="text-center opacity-50">No subclasses yet</div>
+          <Link
+            href={`/source/${baseClass.source.slug}/new/subclass`}
+            className="primary-button self-center"
+          >
+            Create new subclass
+          </Link>
+        </>
       )}
     </div>
   );
