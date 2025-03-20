@@ -39,7 +39,7 @@ async function SourcePage({
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex h-full flex-col">
       <SourceHeader source={source} />
       <SourceTabNavigation source={source} />
     </div>

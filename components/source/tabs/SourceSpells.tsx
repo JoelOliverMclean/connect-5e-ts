@@ -14,13 +14,11 @@ function SourceSpells({
   };
 }>) {
   return (
-    <div className="flex flex-col">
-      <SpellsNavigation
-        sourceSlug={source.slug}
-        spells={source.spells}
-        schools={source.schools}
-      />
-    </div>
+    <SpellsNavigation
+      sourceSlug={source.slug}
+      spells={source.spells}
+      schools={source.schools}
+    />
   );
 }
 

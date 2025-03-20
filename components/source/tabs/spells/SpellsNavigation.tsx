@@ -43,20 +43,32 @@ function SpellsNavigation(props: SpellsNavigationProps) {
         </div>
       );
     }
-    return spells.map((spell, index) => <div key={index}>{spell.name}</div>);
+    return spells.map((spell, index) => (
+      <div
+        className="rounded-lg border-1 border-yellow-500 bg-stone-950 p-2 shadow-md shadow-black"
+        key={index}
+      >
+        <h6 className="">{spell.name}</h6>
+        <p className="text-sm">
+          {props.schools.find((school) => school.id === spell.schoolId)?.name}
+        </p>
+      </div>
+    ));
   };
 
   return (
-    <div>
-      <div className="bg-red-800">
+    <>
+      <div>
         <TabNavigation
           tabs={tabs}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
       </div>
-      <div className="p-4">{spellList(tabs.indexOf(activeTab))}</div>
-    </div>
+      <div className="grid grid-cols-1 gap-2 overflow-y-auto p-4">
+        {spellList(tabs.indexOf(activeTab))}
+      </div>
+    </>
   );
 }
 
