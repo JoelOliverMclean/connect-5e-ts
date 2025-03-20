@@ -57,6 +57,7 @@ model Source {
   languages             Language[]
   currencies            Currency[]
   spells                Spell[]
+  schools               MagicSchool[]
 }
 
 model Race {
@@ -641,11 +642,26 @@ model Spell {
   range               String
   castingTime         String
   sourceId            String
+  schoolId            String
   
   source              Source                @relation(fields: [sourceId], references: [id])
+  school              MagicSchool           @relation(fields: [schoolId], references: [id])
 
   spellMaterials      SpellMaterial[]
   characterSpells     CharacterSpell[]
+
+  @@unique([sourceId, slug], name: "source_slug_uk")
+}
+
+model MagicSchool {
+  id            String        @id @default(uuid())
+  name          String    
+  slug          String
+  description   String
+  sourceId      String
+
+  source        Source      @relation(fields: [sourceId], references: [id])
+  spells        Spell[]
 
   @@unique([sourceId, slug], name: "source_slug_uk")
 }
