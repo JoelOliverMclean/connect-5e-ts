@@ -7,12 +7,14 @@ import type {
   Spell,
   SubClass,
   SubRace,
+  Weapon,
 } from "@prisma/client";
 import React, { useState } from "react";
 import SourceRaces from "./tabs/SourceRaces";
 import TabNavigation from "../navigation/TabNavigation";
 import SourceClasses from "./tabs/SourceClasses";
 import SourceSpells from "./tabs/SourceSpells";
+import SourceWeapons from "./tabs/SourceWeapons";
 
 function SourceTabNavigation({
   source,
@@ -24,6 +26,7 @@ function SourceTabNavigation({
     subClasses: SubClass[];
     spells: Spell[];
     schools: MagicSchool[];
+    weapons: Weapon[];
   };
 }>) {
   const tabs = [
@@ -48,6 +51,7 @@ function SourceTabNavigation({
       {tab === "Races" && <SourceRaces source={source} />}
       {tab === "Classes" && <SourceClasses source={source} />}
       {tab === "Spells" && <SourceSpells source={source} />}
+      {tab === "Weapons" && <SourceWeapons source={source} />}
     </>
   );
 }
