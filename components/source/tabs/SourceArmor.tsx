@@ -15,7 +15,7 @@ function SourceArmor({
     <div
       key={index}
       className="rounded-lg border-1 border-yellow-500 shadow-md shadow-black p-2" >
-      {armor.name}
+      <h6>{armor.name}</h6>
     </div>
   )
 
