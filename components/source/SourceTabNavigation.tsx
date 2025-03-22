@@ -1,6 +1,7 @@
 "use client";
 import type {
   Ammunition,
+  Armor,
   BaseClass,
   MagicSchool,
   Race,
@@ -17,6 +18,7 @@ import SourceClasses from "./tabs/SourceClasses";
 import SourceSpells from "./tabs/SourceSpells";
 import SourceWeapons from "./tabs/SourceWeapons";
 import SourceAmmunition from "./tabs/SourceAmmunition";
+import SourceArmor from "./tabs/SourceArmor";
 
 function SourceTabNavigation({
   source,
@@ -30,6 +32,7 @@ function SourceTabNavigation({
     schools: MagicSchool[];
     weapons: Weapon[];
     ammunitions: Ammunition[];
+    armors: Armor[];
   };
 }>) {
   const tabs = [
@@ -56,6 +59,7 @@ function SourceTabNavigation({
       {tab === "Spells" && <SourceSpells source={source} />}
       {tab === "Weapons" && <SourceWeapons source={source} />}
       {tab === "Ammunitions" && <SourceAmmunition source={source} />}
+      {tab === "Armor" && <SourceArmor source={source} />}
     </>
   );
 }

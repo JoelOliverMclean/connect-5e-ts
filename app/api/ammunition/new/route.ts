@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     }
   
     const slug = slugify(data.name, { lower: true });
-  
+
     const conflictingAmmo = await prisma.ammunition.count({
       where: {
         sourceId: data.sourceId,

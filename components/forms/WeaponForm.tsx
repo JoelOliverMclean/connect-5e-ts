@@ -30,18 +30,17 @@ function WeaponForm({
     setType(type);
   };
 
+  const weaponTypeOptions = Object.keys(WeaponType).map((type, index) => (
+    <option key={index} value={type}>{capitalise(type.toLowerCase())}</option>
+  ))
+
   return (
     <BaseForm onSubmitData={submitWeaponForm} error={error}>
       <input type="text" name="name" placeholder="Name of weapon" />
       <textarea name="description" placeholder="Description of weapon" />
       <select name="type" onChange={onTypeChanged}>
         <option value={undefined}>Select weapon type...</option>
-        <option value={WeaponType.MELEE}>
-          {capitalise(WeaponType.MELEE.toLowerCase())}
-        </option>
-        <option value={WeaponType.RANGED}>
-          {capitalise(WeaponType.RANGED.toLowerCase())}
-        </option>
+        {weaponTypeOptions}
       </select>
       {type === WeaponType.RANGED && (
         <>

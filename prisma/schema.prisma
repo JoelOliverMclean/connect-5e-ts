@@ -327,6 +327,7 @@ model Armor {
   stealthDisadvantage   Boolean
   strengthRequired      Int?
   baseAC                Int?
+  modifier              String?
   bonusAC               Int?
   type                  ArmorType
   sourceId              String
