@@ -14,7 +14,7 @@ function SourceWeapons({
 }>) {
   const weaponCell = (weapon: Weapon, index: number) => (
     <div
-      className="rounded-lg border-1 border-yellow-500 shadow-md shadow-black"
+      className="rounded-lg border-1 border-yellow-500 shadow-md shadow-black p-2"
       key={index}
     >
       <h6>{weapon.name}</h6>
