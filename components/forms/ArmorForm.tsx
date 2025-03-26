@@ -18,7 +18,6 @@ function ArmorForm({
   const [stealthDisadvantage, setStealthDisadvantage] = useState<string>("false")
 
   const submitArmorForm = (data: BaseFormData) => {
-    console.log(data)
     apiPost("/api/armor/new", data).then(({
       response,
       data
@@ -38,7 +37,7 @@ function ArmorForm({
 
   return (
     <BaseForm onSubmitData={submitArmorForm} error={error}>
-      <input hidden type="text" name='sourceId' value={source.id} />
+      <input hidden readOnly type="text" name='sourceId' value={source.id} />
       <input type="text" name='name' placeholder='Name of armor' />
       <select name='type' onChange={(e) => {
         setSelectedArmorType(e.target.value)
