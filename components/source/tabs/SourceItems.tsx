@@ -13,7 +13,7 @@ function SourceItems({ source }: SourceItemsProps) {
   const itemCell = (item: Item, index: number) => (
     <div key={index}
     className='rounded-lg border-1 border-yellow-500 shadow-md shadow-black p-2'>
-      <h4>{item.name}</h4>
+      <h6>{item.name}</h6>
     </div>
   )
 

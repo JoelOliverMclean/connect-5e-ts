@@ -3,7 +3,10 @@ import type {
   Ammunition,
   Armor,
   BaseClass,
+  Condition,
+  Currency,
   Item,
+  Language,
   MagicSchool,
   Race,
   Source,
@@ -21,6 +24,22 @@ import SourceWeapons from "./tabs/SourceWeapons";
 import SourceAmmunition from "./tabs/SourceAmmunition";
 import SourceArmor from "./tabs/SourceArmor";
 import SourceItems from "./tabs/SourceItems";
+import SourceConditions from "./tabs/SourceConditions";
+import SourceLanguages from "./tabs/SourceLanguages";
+import SourceCurrencies from "./tabs/SourceCurrencies";
+
+enum SourceTab {
+  RACES,
+  CLASSES,
+  SPELLS,
+  WEAPONS,
+  AMMUNITIONS,
+  ARMOR,
+  ITEMS,
+  CONDITIONS,
+  LANGUAGES,
+  CURRENCIES
+}
 
 function SourceTabNavigation({
   source,
@@ -36,34 +55,32 @@ function SourceTabNavigation({
     ammunitions: Ammunition[];
     armors: Armor[];
     items: Item[];
+    conditions: Condition[];
+    languages: Language[];
+    currencies: Currency[];
   };
 }>) {
-  const tabs = [
-    "Races",
-    "Classes",
-    "Spells",
-    "Weapons",
-    "Ammunitions",
-    "Armor",
-    "Items",
-    "Conditions",
-    "Languages",
-    "Currencies",
-  ];
-  const [tab, setTab] = useState<string | null | undefined>(tabs[0]);
+  const tabs = Object.keys(SourceTab).filter((item) => { 
+    return isNaN(Number(item));
+  })
+  
+  const [tab, setTab] = useState<string | null | undefined>(SourceTab[SourceTab.RACES]);
 
   return (
     <>
       <div className="bg-red-800">
         <TabNavigation tabs={tabs} activeTab={tab} setActiveTab={setTab} />
       </div>
-      {tab === "Races" && <SourceRaces source={source} />}
-      {tab === "Classes" && <SourceClasses source={source} />}
-      {tab === "Spells" && <SourceSpells source={source} />}
-      {tab === "Weapons" && <SourceWeapons source={source} />}
-      {tab === "Ammunitions" && <SourceAmmunition source={source} />}
-      {tab === "Armor" && <SourceArmor source={source} />}
-      {tab === "Items" && <SourceItems source={source} />}
+      {tab === SourceTab[SourceTab.RACES] && <SourceRaces source={source} />}
+      {tab === SourceTab[SourceTab.CLASSES] && <SourceClasses source={source} />}
+      {tab === SourceTab[SourceTab.SPELLS]&& <SourceSpells source={source} />}
+      {tab === SourceTab[SourceTab.WEAPONS] && <SourceWeapons source={source} />}
+      {tab === SourceTab[SourceTab.AMMUNITIONS] && <SourceAmmunition source={source} />}
+      {tab === SourceTab[SourceTab.ARMOR] && <SourceArmor source={source} />}
+      {tab === SourceTab[SourceTab.ITEMS] && <SourceItems source={source} />}
+      {tab === SourceTab[SourceTab.CONDITIONS] && <SourceConditions source={source} />}
+      {tab === SourceTab[SourceTab.LANGUAGES] && <SourceLanguages source={source} />}
+      {tab === SourceTab[SourceTab.CURRENCIES] && <SourceCurrencies source={source} />}
     </>
   );
 }
