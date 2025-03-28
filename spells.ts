@@ -15,6 +15,9 @@ export type Spell = {
   archetype?: string;
   domains?: string;
   material?: string;
+  oaths?: string; // Paladins
+  patrons?: string; // Warlocks
+  circles?: string; // Druids
 };
 
 export var jsonSpellData: Spell[] = [
