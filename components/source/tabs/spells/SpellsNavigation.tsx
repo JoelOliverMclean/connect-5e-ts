@@ -1,6 +1,7 @@
 "use client";
 import TabNavigation from "@/components/navigation/TabNavigation";
 import { MagicSchool, Spell } from "@prisma/client";
+import { FilePlus, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -65,8 +66,18 @@ function SpellsNavigation(props: SpellsNavigationProps) {
           setActiveTab={setActiveTab}
         />
       </div>
-      <div className="grid grid-cols-1 gap-2 overflow-y-auto p-4">
+      <div className="grid grid-cols-1 gap-2 overflow-y-auto p-4 pb-10">
         {spellList(tabs.indexOf(activeTab))}
+      </div>
+      <div className="absolute right-0 bottom-0 flex items-end p-2">
+        <Link
+          className="rounded-full border-2 border-yellow-500 bg-red-800 p-3 text-center"
+          href={`/source/${props.sourceSlug}/new/spell?level=${tabs.indexOf(
+            activeTab,
+          )}`}
+        >
+          <FilePlus size={32} />
+        </Link>
       </div>
     </>
   );
