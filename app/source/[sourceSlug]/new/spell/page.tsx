@@ -17,6 +17,8 @@ async function NewSpellPage({
   const source = await prisma.source.findUnique({
     include: {
       schools: true,
+      baseClasses: true,
+      subClasses: true,
     },
     where: {
       slug: sourceSlug,
@@ -26,8 +28,6 @@ async function NewSpellPage({
   if (!source) {
     redirect("/");
   }
-
-  console.log(level);
 
   return (
     <div className="flex flex-col">

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { BaseForm, BaseFormData } from "./BaseForm";
-import { MagicSchool, Source } from "@prisma/client";
+import { BaseClass, MagicSchool, Source, SubClass } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { apiPost } from "@/utils/apiUtils";
 import { Check } from "lucide-react";
@@ -9,18 +9,20 @@ import { Check } from "lucide-react";
 interface SpellFormProps {
   source: Source & {
     schools: MagicSchool[];
+    baseClasses: BaseClass[];
+    subClasses: SubClass[];
   };
   level: number;
 }
 
 function SpellForm({ source, level }: SpellFormProps) {
   const [error, setError] = useState<string | null | undefined>(null);
+  const [selectedClasses, setSelectedClasses] = useState<BaseClass[]>([]);
+  const [selectedSubClasses, setSelectedSubClasses] = useState<SubClass[]>([]);
 
   const submitSpellForm = (data: BaseFormData) => {
-    apiPost("/api/spells/new", {
-      ...data,
-      sourceId: source.id,
-    }).then(({ response, data }) => {
+    // console.log(data);
+    apiPost("/api/spells/new", data).then(({ response, data }) => {
       if (response.status === 200) {
         setError(null);
         redirect(`/source/${source.slug}/spells/${data.slug}`);
@@ -57,6 +59,72 @@ function SpellForm({ source, level }: SpellFormProps) {
     <option key={index} value={school.id}>
       {school.name}
     </option>
+  ));
+
+  const toggleClass = (baseClass: BaseClass) => {
+    if (selectedClasses.includes(baseClass)) {
+      setSelectedClasses(selectedClasses.filter((c) => c.id !== baseClass.id));
+      setSelectedSubClasses(
+        selectedSubClasses.filter(
+          (subClass) => subClass.baseClassId !== baseClass.id,
+        ),
+      );
+    } else {
+      setSelectedClasses([...selectedClasses, baseClass]);
+    }
+  };
+
+  const classOptions = source.baseClasses.map((baseClass, index) => (
+    <div
+      key={index}
+      className={`rounded-full px-3 py-1 ${selectedClasses.includes(baseClass) ? "bg-red-800" : "bg-stone-950"}`}
+      onClick={() => toggleClass(baseClass)}
+    >
+      {baseClass.name}
+    </div>
+  ));
+
+  const clearSelectedSubClasses = (baseClass: BaseClass) => {
+    setSelectedSubClasses(
+      selectedSubClasses.filter(
+        (subClass) => subClass.baseClassId !== baseClass.id,
+      ),
+    );
+  };
+
+  const toggleSubClass = (subClass: SubClass) => {
+    if (selectedSubClasses.includes(subClass)) {
+      setSelectedSubClasses(
+        selectedSubClasses.filter((c) => c.id !== subClass.id),
+      );
+    } else {
+      setSelectedSubClasses([...selectedSubClasses, subClass]);
+    }
+  };
+
+  const subClassOptions = selectedClasses.map((baseClass, index) => (
+    <div key={index}>
+      <h5>{baseClass.name} subclasses</h5>
+      <div className="flex flex-nowrap gap-2 overflow-x-auto py-2">
+        <div
+          onClick={() => clearSelectedSubClasses(baseClass)}
+          className={`${selectedSubClasses.some((subClass) => subClass.baseClassId === baseClass.id) ? "bg-stone-950" : "bg-red-800"} rounded-full px-3 py-1`}
+        >
+          All
+        </div>
+        {source.subClasses
+          .filter((subClass) => subClass.baseClassId === baseClass.id)
+          .map((subClass, index) => (
+            <div
+              key={index}
+              className={`rounded-full px-3 py-1 ${selectedSubClasses.includes(subClass) ? "bg-red-800" : "bg-stone-950"}`}
+              onClick={() => toggleSubClass(subClass)}
+            >
+              {subClass.name}
+            </div>
+          ))}
+      </div>
+    </div>
   ));
 
   return (
@@ -99,6 +167,34 @@ function SpellForm({ source, level }: SpellFormProps) {
       <input type="text" name="castingTime" placeholder="Casting time..." />
       <input type="text" name="range" placeholder="Range..." />
       <textarea name="description" placeholder="Description of spell" />
+      <div>
+        <h5>Classes</h5>
+        <div className="disable-scrollbars flex flex-nowrap gap-2 overflow-x-auto py-2">
+          {classOptions}
+        </div>
+      </div>
+      {subClassOptions}
+      <input
+        hidden
+        readOnly
+        type="text"
+        name="classes"
+        value={
+          selectedClasses &&
+          selectedClasses.map((baseClass) => baseClass.id).join(",")
+        }
+      />
+      <input
+        hidden
+        readOnly
+        type="text"
+        name="subclasses"
+        value={
+          selectedSubClasses &&
+          selectedSubClasses.map((subClass) => subClass.id).join(",")
+        }
+      />
+      <input hidden readOnly type="text" name="sourceId" value={source.id} />
     </BaseForm>
   );
 }

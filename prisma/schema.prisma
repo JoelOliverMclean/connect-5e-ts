@@ -123,6 +123,7 @@ model BaseClass {
   features                  ClassFeature[]
   characterClasses          CharacterClass[]
   characterAlterations      CharacterAlteration[]
+  spells                    Spell[]
 
   @@unique([sourceId, slug], name: "source_slug_uk")
 }
@@ -141,6 +142,7 @@ model SubClass {
   features                  ClassFeature[]
   characterClasses          CharacterClass[]
   characterAlterations      CharacterAlteration[]
+  spells                    Spell[]
 
   @@unique([sourceId, slug], name: "source_slug_uk")
 }
@@ -648,6 +650,8 @@ model Spell {
   source              Source                @relation(fields: [sourceId], references: [id])
   school              MagicSchool           @relation(fields: [schoolId], references: [id])
 
+  classes             BaseClass[]
+  subclasses          SubClass[]
   spellMaterials      SpellMaterial[]
   characterSpells     CharacterSpell[]
 

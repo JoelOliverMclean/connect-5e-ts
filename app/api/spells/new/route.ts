@@ -76,15 +76,41 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const newSpell = await prisma.spell.create({
-    data: {
-      ...data,
-      slug,
-      level: parseInt(data.level),
-      verbal: data.verbal === "true",
-      somatic: data.somatic === "true",
-      material: data.material === "true",
+  console.log("Creating new spell");
+
+  const classes = data.classes
+    .split(",")
+    .map((classId: string) => ({ id: classId }));
+
+  const subclasses = data.subclasses
+    .split(",")
+    .map((subclassId: string) => ({ id: subclassId }));
+
+  console.log("Classes", classes);
+
+  const newSpellData = {
+    name: data.name,
+    description: data.description,
+    sourceId: data.sourceId,
+    schoolId: data.schoolId,
+    duration: data.duration,
+    castingTime: data.castingTime,
+    range: data.range,
+    slug,
+    level: parseInt(data.level),
+    verbal: data.verbal === "true",
+    somatic: data.somatic === "true",
+    material: data.material === "true",
+    classes: {
+      connect: classes,
     },
+    subclasses: {
+      connect: subclasses,
+    },
+  };
+
+  const newSpell = await prisma.spell.create({
+    data: newSpellData,
   });
 
   if (!newSpell) {
